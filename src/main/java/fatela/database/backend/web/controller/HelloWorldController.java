@@ -1,4 +1,4 @@
-package fatela.database.backend;
+package fatela.database.backend.web.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
