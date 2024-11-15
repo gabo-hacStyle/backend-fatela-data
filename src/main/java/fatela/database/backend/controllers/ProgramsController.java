@@ -34,7 +34,7 @@ public class ProgramsController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_COORDINATOR', 'ROLE_STAFF')")
     @RequestMapping("/courses")
-    public List<CoursesModel> getCourses() {
+    public List<String> getCourses() {
         return programsService.getAllCourses();
     }
 }

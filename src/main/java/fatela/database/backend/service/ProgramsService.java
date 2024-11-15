@@ -27,7 +27,7 @@ public class ProgramsService {
     }
 
     //Find all courses
-    public List<CoursesModel> getAllCourses(){
-        return (List<CoursesModel>) courseRepository.findAll();
+    public List<String> getAllCourses(){
+        return (List<String>) courseRepository.findAllGroupByCourseCode();
     }
 }

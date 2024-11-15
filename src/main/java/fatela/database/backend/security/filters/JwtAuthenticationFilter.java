@@ -2,6 +2,7 @@ package fatela.database.backend.security.filters;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fatela.database.backend.models.CountryModel;
 import fatela.database.backend.models.UserModel;
 import fatela.database.backend.security.jwt.JwtUtils;
 import jakarta.servlet.FilterChain;
@@ -34,10 +35,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserModel userModel = null;
         String email = "";
         String password = "";
+
         try {
             userModel = new ObjectMapper().readValue(request.getInputStream(), UserModel.class);
             email = userModel.getEmail();
             password = userModel.getPassword();
+
+
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

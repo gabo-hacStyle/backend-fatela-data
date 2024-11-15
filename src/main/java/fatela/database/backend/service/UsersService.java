@@ -29,6 +29,7 @@ public class UsersService {
         List<UserModel> users = usersRepository.findAll();
         return users.stream()
                 .map(user -> new ShowUsersDTO(
+                        user.getUserId(),
                         user.getName(),
                         user.getEmail(),
                         user.isEnabled(),
@@ -46,6 +47,7 @@ public class UsersService {
             return null;
         }
         return new ShowUsersDTO(
+                user.getUserId(),
                 user.getName(),
                 user.getEmail(),
                 user.isEnabled(),

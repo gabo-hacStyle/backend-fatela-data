@@ -41,6 +41,7 @@ public class AuthService {
                 .email(adminModelRequest.getEmail())
                 .name(adminModelRequest.getName())
                 .roles(rol)
+                .enabled(adminModelRequest.isEnabled())
                 .password(passwordEncoder.encode(adminModelRequest.getPassword()))
                 .country(countryModel)
                 .build();
@@ -64,6 +65,7 @@ public class AuthService {
                 .email(user.getEmail())
                 .name(user.getName())
                 .roles(roles)
+                .enabled(user.isEnabled())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .country(countryModel)
                 .build();

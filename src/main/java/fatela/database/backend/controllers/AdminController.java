@@ -26,6 +26,12 @@ public class AdminController {
         return usersService.getAllUsers();
     }
 
+    @GetMapping("/users/{email}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_COORDINATOR', 'ROLE_STAFF')")
+    public ShowUsersDTO getUserByEmail(@PathVariable String email) {
+        return usersService.getUserByEmail(email);
+    }
+
     @PutMapping
     @RequestMapping("/updateUser")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

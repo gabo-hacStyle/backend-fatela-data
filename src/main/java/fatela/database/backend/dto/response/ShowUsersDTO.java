@@ -11,6 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShowUsersDTO {
+    private Long userId;
     private String name;
     private String email;
     private boolean enabled;
