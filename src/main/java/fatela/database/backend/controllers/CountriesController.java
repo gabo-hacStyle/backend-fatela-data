@@ -19,7 +19,7 @@ public class CountriesController {
     private CountryRepository countryRepository;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_COORDINATOR', 'ROLE_STAFF')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<List<CountryModel>> getAllCountries() {
         return ResponseEntity.ok(countryRepository.findAll());
     }

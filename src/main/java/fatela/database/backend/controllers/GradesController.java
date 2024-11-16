@@ -46,7 +46,7 @@ public class GradesController {
     //Notas filtradas -> Staff
     @GetMapping
     @RequestMapping("/filteredBy")
-    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_COORDINATOR')")
     public ResponseEntity<Page<ShowGradesDTO>> getGradesFiltered(
 
                 @RequestParam(required = false) String student,
@@ -73,18 +73,18 @@ public class GradesController {
 
     //Cantidad de estudiantes y notas unicamente de un pais -> Coordinator
     //modificar todos los filtros pero esta vez para un pais en especifico, where pais = countryId
-    @GetMapping
-    @RequestMapping("/country/{countryId}")
-    @PreAuthorize("hasAnyRole('ROLE_COORDINATOR')")
-    public ResponseEntity<ShowGradesForCoordinatorDTO> getStudentsByCountry(@PathVariable Integer countryId){
-       Integer quantity = gradesService.getStudentsQuantityByCountry(countryId);
-       List<ShowGradesDTO> grades = gradesService.getStudentsByCountry(countryId);
-        return ResponseEntity.ok(new ShowGradesForCoordinatorDTO(quantity, grades));
-    }
+    //@GetMapping
+    //@RequestMapping("/country/{countryId}")
+    //@PreAuthorize("hasAnyRole('ROLE_COORDINATOR')")
+    //public ResponseEntity<ShowGradesForCoordinatorDTO> getStudentsByCountry(@PathVariable Integer countryId){
+    //   Integer quantity = gradesService.getStudentsQuantityByCountry(countryId);
+    //   List<ShowGradesDTO> grades = gradesService.getStudentsByCountry(countryId);
+    //    return ResponseEntity.ok(new ShowGradesForCoordinatorDTO(quantity, grades));
+    //}
 
     @GetMapping
     @RequestMapping("/infoQuantities")
-    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_COORDINATOR')")
 public ResponseEntity<ShowInitialInfoDTO> getInfoQuantities(
             @RequestParam(required = false) String approved,
             @RequestParam(required = false) String course,

@@ -139,7 +139,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
     Integer malesQuantity();
 
     @Query(
-            value = "SELECT COUNT(DISTINCT courseCode) FROM GradesModel g " +
+            value = "SELECT COUNT(DISTINCT courseCode) FROM GradesModel g where" +
                     "(:courseProgram IS NULL OR g.courseProgram = :courseProgram)"
     )
     Integer coursesQuantity(
