@@ -33,31 +33,33 @@ public class GradesService {
         return getShowGradesDTOPages(grades);
 
     }
-    public List<ShowGradesDTO> getGradesFiltered(
+    public Page<ShowGradesDTO> getGradesFiltered(
                                                  String studentCode,
                                                  String approved,
                                                  String courseCode,
                                                  String courseProgram,
                                                  Integer year,
-                                                 String studentCountryName,
+                                                 Integer countryId,
                                                  String studentGender,
-                                                 String courseCodeWithYear){
+                                                 String courseCodeWithYear,
+                                                 int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
 
 
-
-        List<GradesModel> grades = gradesRepository.findGradesByFilters(
+        Page<GradesModel> grades = gradesRepository.findGradesByFilters(
                 studentCode,
                 approved,
                 courseCode,
                 courseProgram,
                 year,
-                studentCountryName,
+                countryId,
                 studentGender,
-                courseCodeWithYear
+                courseCodeWithYear,
+                pageable
         );
 
 
-        return getShowGradesDTOList(grades);
+        return getShowGradesDTOPages(grades);
 
     }
 
@@ -67,38 +69,67 @@ public class GradesService {
             String courseCode,
             String courseProgram,
             Integer year,
-            String studentCountryName,
+            Integer countryId,
             String studentGender,
             String courseCodeWithYear
     ){
-        Integer studentsQuantity = gradesRepository.countGradesByFilters(
-                studentCode,
-                approved,
-                courseCode,
-                courseProgram,
-                year,
-                studentCountryName,
-                courseCodeWithYear
-        );
-        Integer femalesQuantity = gradesRepository.countGradesByFiltersFemale(
-                studentCode,
-                approved,
-                courseCode,
-                courseProgram,
-                 year,
-                studentCountryName,
-                courseCodeWithYear
-        );
-        Integer malesQuantity = gradesRepository.countGradesByFiltersMale(
-                studentCode,
-                approved,
-                courseCode,
-                courseProgram,
-                year,
-                studentCountryName,
-                courseCodeWithYear
-        );
-        Integer coursesQuantity = gradesRepository.coursesQuantity();
+        // Integer studentsQuantity = gradesRepository.countGradesByFilters(
+//         studentCode,
+//         approved,
+//         courseCode,
+//         courseProgram,
+//         year,
+//         countryId,
+//         courseCodeWithYear
+// );
+        Integer femalesQuantity = 0;
+        Integer malesQuantity = 0;
+        Integer totalQuantity = 0;
+
+        if ("Masculino".equalsIgnoreCase(studentGender)) {
+            malesQuantity = gradesRepository.countGradesByFiltersMale(
+                    studentCode,
+                    approved,
+                    courseCode,
+                    courseProgram,
+                    year,
+                    countryId,
+                    courseCodeWithYear
+            );
+            totalQuantity = malesQuantity;
+        } else if ("Femenino".equalsIgnoreCase(studentGender)) {
+            femalesQuantity = gradesRepository.countGradesByFiltersFemale(
+                    studentCode,
+                    approved,
+                    courseCode,
+                    courseProgram,
+                    year,
+                    countryId,
+                    courseCodeWithYear
+            );
+            totalQuantity = femalesQuantity;
+        } else {
+            femalesQuantity = gradesRepository.countGradesByFiltersFemale(
+                    studentCode,
+                    approved,
+                    courseCode,
+                    courseProgram,
+                    year,
+                    countryId,
+                    courseCodeWithYear
+            );
+            malesQuantity = gradesRepository.countGradesByFiltersMale(
+                    studentCode,
+                    approved,
+                    courseCode,
+                    courseProgram,
+                    year,
+                    countryId,
+                    courseCodeWithYear
+            );
+            totalQuantity = femalesQuantity + malesQuantity;
+        }
+        Integer coursesQuantity = gradesRepository.coursesQuantity(courseProgram);
 
         List<ShowStudentsByCountryDTO> studentsByCountry = gradesRepository.studentsNumberByCountry(
                 studentCode,
@@ -106,12 +137,12 @@ public class GradesService {
                 courseCode,
                 courseProgram,
                 year,
-                studentCountryName,
+                countryId,
                 studentGender,
                 courseCodeWithYear
         );
         Map<String, Object> response = new HashMap<>();
-        response.put("studentsQuantity", studentsQuantity);
+        response.put("studentsQuantity", totalQuantity);
         response.put("femalesQuantity", femalesQuantity);
         response.put("malesQuantity", malesQuantity);
         response.put("coursesQuantity", coursesQuantity);

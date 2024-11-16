@@ -46,22 +46,24 @@ public class GradesController {
     //Notas filtradas -> Staff
     @GetMapping
     @RequestMapping("/filteredBy")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_COORDINATOR', 'ROLE_STAFF')")
-    public ResponseEntity<List<ShowGradesDTO>> getGradesFiltered(
+    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
+    public ResponseEntity<Page<ShowGradesDTO>> getGradesFiltered(
 
                 @RequestParam(required = false) String student,
                 @RequestParam(required = false) String approved,
                 @RequestParam(required = false) String course,
                 @RequestParam(required = false) String program,
                 @RequestParam(required = false) Integer year,
-                @RequestParam(required = false) String country,
+                @RequestParam(required = false) Integer countryId,
                 @RequestParam(required = false) String gender,
-                @RequestParam(required = false) String courseWithYear){
+                @RequestParam(required = false) String courseWithYear,
+                @RequestParam(defaultValue = "0") int page,
+                @RequestParam(defaultValue = "30") int size){
         //Integer yearInt = year == null ? null : Integer.parseInt(year);
 
 
-        List<ShowGradesDTO> grades = gradesService.getGradesFiltered(student, approved, course, program, year,
-        country, gender, courseWithYear);
+        Page<ShowGradesDTO> grades = gradesService.getGradesFiltered(student, approved, course, program, year,
+        countryId, gender, courseWithYear, page, size);
 
 
 
@@ -85,21 +87,21 @@ public class GradesController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF')")
 public ResponseEntity<ShowInitialInfoDTO> getInfoQuantities(
             @RequestParam(required = false) String approved,
-            @RequestParam(required = false) String courseCode,
-            @RequestParam(required = false) String courseProgram,
+            @RequestParam(required = false) String course,
+            @RequestParam(required = false) String program,
             @RequestParam(required = false) Integer year,
-            @RequestParam(required = false) String studentCode,
-            @RequestParam(required = false) String studentCountryName,
+            @RequestParam(required = false) String student,
+            @RequestParam(required = false) Integer countryId,
             @RequestParam(required = false) String gender,
             @RequestParam(required = false) String courseCodeWithYear
     ) {
     Map<String, Object> quantities = gradesService.getInfoQuantities(
-            studentCode,
+            student,
             approved,
-            courseCode,
-            courseProgram,
+            course,
+            program,
             year,
-            studentCountryName,
+            countryId,
             gender,
             courseCodeWithYear
     );

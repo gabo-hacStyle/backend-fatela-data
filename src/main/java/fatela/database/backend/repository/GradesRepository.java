@@ -23,18 +23,18 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
             "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
             "(:year IS NULL OR g.year = :year) AND " +
-            "(:studentCountryName IS NULL OR g.studentCountryName = :studentCountryName) AND " +
+            "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
             "(:studentGender IS NULL OR g.studentGender = :studentGender) AND " +
             "(:courseCodeWithYear IS NULL OR g.courseCodeWithYear = :courseCodeWithYear)")
-    List<GradesModel> findGradesByFilters(
+    Page<GradesModel> findGradesByFilters(
             @Param("studentCode") String studentCode,
             @Param("approved") String approved,
             @Param("courseCode") String courseCode,
             @Param("courseProgram") String courseProgram,
             @Param("year") Integer year,
-            @Param("studentCountryName") String studentCountryName,
+            @Param("countryId") Integer countryId,
             @Param("studentGender") String studentGender,
-            @Param("courseCodeWithYear") String courseCodeWithYear);
+            @Param("courseCodeWithYear") String courseCodeWithYear, Pageable pageable);
 
     //Para contar los datos de estudiantes hombres
     @Query("SELECT COUNT(distinct g.studentCode) FROM GradesModel g WHERE " +
@@ -44,7 +44,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
             "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
             "(:year IS NULL OR g.year = :year) AND " +
-            "(:studentCountryName IS NULL OR g.studentCountryName = :studentCountryName) AND " +
+            "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
             "(:courseCodeWithYear IS NULL OR g.courseCodeWithYear = :courseCodeWithYear)")
     Integer countGradesByFiltersMale(
             @Param("studentCode") String studentCode,
@@ -52,7 +52,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             @Param("courseCode") String courseCode,
             @Param("courseProgram") String courseProgram,
             @Param("year") Integer year,
-            @Param("studentCountryName") String studentCountryName,
+            @Param("countryId") Integer countryId,
 
             @Param("courseCodeWithYear") String courseCodeWithYear);
 
@@ -63,7 +63,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
             "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
             "(:year IS NULL OR g.year = :year) AND " +
-            "(:studentCountryName IS NULL OR g.studentCountryName = :studentCountryName) AND " +
+            "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
 
             "(:courseCodeWithYear IS NULL OR g.courseCodeWithYear = :courseCodeWithYear)")
     Integer countGradesByFiltersFemale(
@@ -72,7 +72,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             @Param("courseCode") String courseCode,
             @Param("courseProgram") String courseProgram,
             @Param("year") Integer year,
-            @Param("studentCountryName") String studentCountryName,
+            @Param("countryId") Integer countryId,
 
             @Param("courseCodeWithYear") String courseCodeWithYear);
 
@@ -83,7 +83,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
             "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
             "(:year IS NULL OR g.year = :year) AND " +
-            "(:studentCountryName IS NULL OR g.studentCountryName = :studentCountryName) AND " +
+            "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
             "(:courseCodeWithYear IS NULL OR g.courseCodeWithYear = :courseCodeWithYear)")
     Integer countGradesByFilters(
             @Param("studentCode") String studentCode,
@@ -91,7 +91,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             @Param("courseCode") String courseCode,
             @Param("courseProgram") String courseProgram,
             @Param("year") Integer year,
-            @Param("studentCountryName") String studentCountryName,
+            @Param("countryId") Integer countryId,
 
             @Param("courseCodeWithYear") String courseCodeWithYear);
 
@@ -103,8 +103,8 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
             "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
             "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
             "(:year IS NULL OR g.year = :year) AND " +
-            "(:studentCountryName IS NULL OR g.studentCountryName = :studentCountryName) AND " +
             "(:studentGender IS NULL OR g.studentGender = :studentGender) AND " +
+            "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
             "(:courseCodeWithYear IS NULL OR g.courseCodeWithYear = :courseCodeWithYear)" +
             "GROUP BY g.studentCountryName")
     List<ShowStudentsByCountryDTO> studentsNumberByCountry(@Param("studentCode") String studentCode,
@@ -112,7 +112,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
                                                            @Param("courseCode") String courseCode,
                                                            @Param("courseProgram") String courseProgram,
                                                            @Param("year") Integer year,
-                                                           @Param("studentCountryName") String studentCountryName,
+                                                           @Param("countryId") Integer countryId,
                                                            @Param("studentGender") String studentGender,
                                                            @Param("courseCodeWithYear") String courseCodeWithYear);
 
@@ -139,9 +139,12 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
     Integer malesQuantity();
 
     @Query(
-            value = "SELECT COUNT(DISTINCT courseCode) FROM GradesModel"
+            value = "SELECT COUNT(DISTINCT courseCode) FROM GradesModel g " +
+                    "(:courseProgram IS NULL OR g.courseProgram = :courseProgram)"
     )
-    Integer coursesQuantity();
+    Integer coursesQuantity(
+            @Param("courseProgram") String courseProgram
+    );
 
     @Query(
             value = "SELECT COUNT(DISTINCT studentCode) FROM GradesModel where studentCountryId = :countryId"
