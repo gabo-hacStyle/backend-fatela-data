@@ -1,12 +1,8 @@
 package fatela.database.backend.controllers;
 
 
-import fatela.database.backend.dto.response.ShowGradesDTO;
+import fatela.database.backend.dto.response.*;
 
-import fatela.database.backend.dto.response.ShowGradesForCoordinatorDTO;
-
-import fatela.database.backend.dto.response.ShowInitialInfoDTO;
-import fatela.database.backend.dto.response.ShowStudentsByCountryDTO;
 import fatela.database.backend.models.GradesModel;
 import fatela.database.backend.models.StudentsModel;
 import fatela.database.backend.repository.GradesRepository;
@@ -115,4 +111,14 @@ public ResponseEntity<ShowInitialInfoDTO> getInfoQuantities(
 
     return ResponseEntity.ok(response);
 }
+    @GetMapping
+    @RequestMapping("/studentsByTime")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_COORDINATOR')")
+    public ResponseEntity<List<ShowStudentsByYearDTO>> getStudentsByTime(
+            @RequestParam(required = false) Integer countryId
+    ){
+        return ResponseEntity.ok(gradesService.getStudentsByYear(countryId));
+    }
 }
+
+

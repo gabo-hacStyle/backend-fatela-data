@@ -1,6 +1,7 @@
 package fatela.database.backend.repository;
 
 import fatela.database.backend.dto.response.ShowStudentsByCountryDTO;
+import fatela.database.backend.dto.response.ShowStudentsByYearDTO;
 import fatela.database.backend.models.GradesModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -152,5 +153,22 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
     Integer countAllByStudentCountryId(
             @Param("countryId") Integer countryId
     );
+
+    @Query(
+            value = "SELECT new " +
+                    "fatela.database.backend.dto.response.ShowStudentsByYearDTO(COUNT(distinct g.studentCode), g.year) FROM GradesModel g WHERE " +
+                    " g.studentCountryId = :countryId group by g.year"
+    )
+    List<ShowStudentsByYearDTO> studentsNumberByYearAndCountry(
+            @Param("countryId") Integer countryId
+    );
+
+    @Query(
+            value = "SELECT new " +
+                    "fatela.database.backend.dto.response.ShowStudentsByYearDTO(COUNT(distinct g.studentCode), g.year) FROM GradesModel g " +
+                    " group by g.year"
+    )
+    List<ShowStudentsByYearDTO> studentsNumberByYear();
+
 
 }

@@ -2,6 +2,7 @@ package fatela.database.backend.service;
 
 import fatela.database.backend.dto.response.ShowGradesDTO;
 import fatela.database.backend.dto.response.ShowStudentsByCountryDTO;
+import fatela.database.backend.dto.response.ShowStudentsByYearDTO;
 import fatela.database.backend.models.GradesModel;
 import fatela.database.backend.repository.GradesRepository;
 import fatela.database.backend.specifications.GradesSpecification;
@@ -153,9 +154,14 @@ public class GradesService {
         return gradesRepository.countAllByStudentCountryId(countryId);
     }
 
-    public List<ShowGradesDTO> getStudentsByCountry(Integer countryId){
-        List<GradesModel> grades = gradesRepository.findAllByStudentCountryId(countryId);
-        return getShowGradesDTOList(grades);
+    public List<ShowStudentsByYearDTO> getStudentsByYear (Integer countryId){
+        List<ShowStudentsByYearDTO> grades;
+        if (countryId == null) {
+            grades = gradesRepository.studentsNumberByYear();
+        } else {
+            grades = gradesRepository.studentsNumberByYearAndCountry(countryId);
+        }
+        return grades;
     }
 
     private Page<ShowGradesDTO> getShowGradesDTOPages(Page<GradesModel> grades) {

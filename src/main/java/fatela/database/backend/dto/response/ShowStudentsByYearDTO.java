@@ -1,5 +1,6 @@
 package fatela.database.backend.dto.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShowStudentsByCountryDTO {
+public class ShowStudentsByYearDTO {
     private Long count;
-    private String country;
+    private Integer year;
 }
-
