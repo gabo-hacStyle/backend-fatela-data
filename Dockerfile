@@ -2,7 +2,8 @@ FROM maven:3 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+COPY src/main/resources/application.properties ./src/main/resources/application.properties
+RUN mvn clean package -X -DskipTests
 
 FROM openjdk:21
 WORKDIR /app

@@ -77,24 +77,7 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
 
             @Param("courseCodeWithYear") String courseCodeWithYear);
 
-    //Todos los estudiantes
-    @Query("SELECT COUNT(distinct g.studentCode) FROM GradesModel g WHERE " +
-            "(:studentCode IS NULL OR g.studentCode = :studentCode) AND " +
-            "(:approved IS NULL OR g.approved = :approved) AND " +
-            "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
-            "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
-            "(:year IS NULL OR g.year = :year) AND " +
-            "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
-            "(:courseCodeWithYear IS NULL OR g.courseCodeWithYear = :courseCodeWithYear)")
-    Integer countGradesByFilters(
-            @Param("studentCode") String studentCode,
-            @Param("approved") String approved,
-            @Param("courseCode") String courseCode,
-            @Param("courseProgram") String courseProgram,
-            @Param("year") Integer year,
-            @Param("countryId") Integer countryId,
 
-            @Param("courseCodeWithYear") String courseCodeWithYear);
 
 
     @Query("SELECT new " +
@@ -119,56 +102,31 @@ public interface GradesRepository extends JpaRepository<GradesModel, String> {
 
 
 
-
-
-    List<GradesModel> findAllByStudentCountryId(Integer countryId);
-    //Integer countAllByStudentCountryId(Integer countryId);
-
-    @Query(
-            value = "SELECT COUNT(DISTINCT studentCode) FROM GradesModel"
-    )
-    Integer studentsQuantity();
-
-    @Query(
-            value = "SELECT COUNT(studentGender) FROM GradesModel where studentGender = 'Femenino'"
-    )
-    Integer  femalesQuantity();
-
-    @Query(
-            value = "SELECT COUNT(studentGender) FROM GradesModel where studentGender = 'Masculino'"
-    )
-    Integer malesQuantity();
-
-    @Query(
-            value = "SELECT COUNT(DISTINCT g.courseCode) FROM GradesModel g where" +
-                    "(:courseProgram IS NULL OR g.courseProgram = :courseProgram)"
-    )
-    Integer coursesQuantity(
-            @Param("courseProgram") String courseProgram
-    );
-
-    @Query(
-            value = "SELECT COUNT(DISTINCT studentCode) FROM GradesModel where studentCountryId = :countryId"
-    )
-    Integer countAllByStudentCountryId(
-            @Param("countryId") Integer countryId
-    );
-
     @Query(
             value = "SELECT new " +
-                    "fatela.database.backend.dto.response.ShowStudentsByYearDTO(COUNT(distinct g.studentCode), g.year) FROM GradesModel g WHERE " +
-                    " g.studentCountryId = :countryId group by g.year"
-    )
-    List<ShowStudentsByYearDTO> studentsNumberByYearAndCountry(
-            @Param("countryId") Integer countryId
-    );
-
-    @Query(
-            value = "SELECT new " +
-                    "fatela.database.backend.dto.response.ShowStudentsByYearDTO(COUNT(distinct g.studentCode), g.year) FROM GradesModel g " +
+                    "fatela.database.backend.dto.response.ShowStudentsByYearDTO(COUNT(distinct g.studentCode), g.year) FROM GradesModel g where " +
+                    "(:approved IS NULL OR g.approved = :approved) AND " +
+                    "(:courseCode IS NULL OR g.courseCode = :courseCode) AND " +
+                    "(:courseProgram IS NULL OR g.courseProgram = :courseProgram) AND " +
+                    "(:studentGender IS NULL OR g.studentGender = :studentGender) AND " +
+                    "(:countryId IS NULL OR g.studentCountryId = :countryId) AND " +
+                    "(:year IS NULL OR g.year = :year)" +
                     " group by g.year"
     )
-    List<ShowStudentsByYearDTO> studentsNumberByYear();
+    List<ShowStudentsByYearDTO> studentsNumberByYear(
+            @Param("approved") String approved,
+            @Param("courseCode") String courseCode,
+            @Param("courseProgram") String courseProgram,
+            @Param("studentGender") String studentGender,
+            @Param("countryId") Integer countryId,
+            @Param("year") Integer year
+    );
+
+
+
+
+
+
 
 
 }

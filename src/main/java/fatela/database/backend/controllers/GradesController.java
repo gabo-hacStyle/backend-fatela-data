@@ -32,7 +32,7 @@ public class GradesController {
 
     //Todas las notas en paginas
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_COORDINATOR', 'ROLE_STAFF')")
+    @PreAuthorize("hasAnyRole('ROLE_COORDINATOR', 'ROLE_STAFF')")
     public ResponseEntity<Page<ShowGradesDTO>> getGrades(
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "100")  int size){
@@ -106,19 +106,11 @@ public ResponseEntity<ShowInitialInfoDTO> getInfoQuantities(
         response.setTotalStudents(((Number) quantities.get("studentsQuantity")).longValue());
         response.setTotalFemales(((Number) quantities.get("femalesQuantity")).longValue());
         response.setTotalMales(((Number) quantities.get("malesQuantity")).longValue());
-        response.setTotalCourses(((Number) quantities.get("coursesQuantity")).longValue());
         response.setStudentsByCountry((List<ShowStudentsByCountryDTO>) quantities.get("studentsByCountry"));
-
+        response.setStudentsByYear((List<ShowStudentsByYearDTO>) quantities.get("studentsByYear"));
     return ResponseEntity.ok(response);
 }
-    @GetMapping
-    @RequestMapping("/studentsByTime")
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_COORDINATOR')")
-    public ResponseEntity<List<ShowStudentsByYearDTO>> getStudentsByTime(
-            @RequestParam(required = false) Integer countryId
-    ){
-        return ResponseEntity.ok(gradesService.getStudentsByYear(countryId));
-    }
+
 }
 
 

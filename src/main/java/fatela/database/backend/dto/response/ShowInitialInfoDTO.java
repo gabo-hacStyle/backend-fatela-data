@@ -14,8 +14,8 @@ public class ShowInitialInfoDTO {
     private Long totalStudents;
     private Long totalFemales;
     private Long totalMales;
-    private Long totalCourses;
     private List<ShowStudentsByCountryDTO> studentsByCountry;
+    private List<ShowStudentsByYearDTO> studentsByYear;
 
 
 

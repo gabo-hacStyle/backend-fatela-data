@@ -130,7 +130,7 @@ public class GradesService {
             );
             totalQuantity = femalesQuantity + malesQuantity;
         }
-        Integer coursesQuantity = gradesRepository.coursesQuantity(courseProgram);
+
 
         List<ShowStudentsByCountryDTO> studentsByCountry = gradesRepository.studentsNumberByCountry(
                 studentCode,
@@ -142,27 +142,24 @@ public class GradesService {
                 studentGender,
                 courseCodeWithYear
         );
+        List <ShowStudentsByYearDTO> studentsByYear = gradesRepository.studentsNumberByYear(
+                approved,
+                courseCode,
+                courseProgram,
+                studentGender,
+                countryId,
+                year
+        );
         Map<String, Object> response = new HashMap<>();
         response.put("studentsQuantity", totalQuantity);
         response.put("femalesQuantity", femalesQuantity);
         response.put("malesQuantity", malesQuantity);
-        response.put("coursesQuantity", coursesQuantity);
         response.put("studentsByCountry", studentsByCountry);
+        response.put("studentsByYear", studentsByYear);
         return response;
     }
-    public Integer getStudentsQuantityByCountry(Integer countryId){
-        return gradesRepository.countAllByStudentCountryId(countryId);
-    }
 
-    public List<ShowStudentsByYearDTO> getStudentsByYear (Integer countryId){
-        List<ShowStudentsByYearDTO> grades;
-        if (countryId == null) {
-            grades = gradesRepository.studentsNumberByYear();
-        } else {
-            grades = gradesRepository.studentsNumberByYearAndCountry(countryId);
-        }
-        return grades;
-    }
+
 
     private Page<ShowGradesDTO> getShowGradesDTOPages(Page<GradesModel> grades) {
         return grades.map(grade -> {
