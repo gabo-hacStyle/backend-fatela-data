@@ -19,20 +19,23 @@ import lombok.NoArgsConstructor;
 public class GradesModel {
 
     @Id
-    @Column(name = "md5")
+    @Column(name = "sk_nota")
     private String hash;
 
     @Column(name = "fk_estudiante")
     private String studentCode;
 
     @Column(name = "fk_curso")
-    private String courseCodeWithYear;
+    private String courseCodeWithYearAndProgram;
 
     @Column(name = "fk_pais")
     private Integer studentCountryId;
 
     @Column(name = "codigo_curso")
     private String courseCode;
+
+    @Column(name = "nombre_curso")
+    private String courseName;
 
     @Column(name = "aprobado")
     private String approved;

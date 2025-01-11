@@ -42,7 +42,7 @@ public class GradesService {
                                                  Integer year,
                                                  Integer countryId,
                                                  String studentGender,
-                                                 String courseCodeWithYear,
+
                                                  int page, int size){
         Pageable pageable = PageRequest.of(page, size);
 
@@ -55,7 +55,6 @@ public class GradesService {
                 year,
                 countryId,
                 studentGender,
-                courseCodeWithYear,
                 pageable
         );
 
@@ -71,8 +70,7 @@ public class GradesService {
             String courseProgram,
             Integer year,
             Integer countryId,
-            String studentGender,
-            String courseCodeWithYear
+            String studentGender
     ){
         // Integer studentsQuantity = gradesRepository.countGradesByFilters(
 //         studentCode,
@@ -94,8 +92,8 @@ public class GradesService {
                     courseCode,
                     courseProgram,
                     year,
-                    countryId,
-                    courseCodeWithYear
+                    countryId
+
             );
             totalQuantity = malesQuantity;
         } else if ("Femenino".equalsIgnoreCase(studentGender)) {
@@ -105,8 +103,7 @@ public class GradesService {
                     courseCode,
                     courseProgram,
                     year,
-                    countryId,
-                    courseCodeWithYear
+                    countryId
             );
             totalQuantity = femalesQuantity;
         } else {
@@ -116,8 +113,7 @@ public class GradesService {
                     courseCode,
                     courseProgram,
                     year,
-                    countryId,
-                    courseCodeWithYear
+                    countryId
             );
             malesQuantity = gradesRepository.countGradesByFiltersMale(
                     studentCode,
@@ -125,8 +121,7 @@ public class GradesService {
                     courseCode,
                     courseProgram,
                     year,
-                    countryId,
-                    courseCodeWithYear
+                    countryId
             );
             totalQuantity = femalesQuantity + malesQuantity;
         }
@@ -139,8 +134,7 @@ public class GradesService {
                 courseProgram,
                 year,
                 countryId,
-                studentGender,
-                courseCodeWithYear
+                studentGender
         );
         List <ShowStudentsByYearDTO> studentsByYear = gradesRepository.studentsNumberByYear(
                 approved,

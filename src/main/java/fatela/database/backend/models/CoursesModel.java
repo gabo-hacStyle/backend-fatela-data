@@ -13,10 +13,16 @@ import lombok.NoArgsConstructor;
 public class CoursesModel {
 
     @Id
+    @Column(name = "curso_y_maestria")
+    private String courseCodeWithProgram;
+
     @Column(name="curso_real")
-    private String courseCode;
+    private String courseWithYear;
 
     @Column(name="codigo_curso")
+    private String courseCode;
+
+    @Column(name = "nombre_curso")
     private String courseName;
 
     @Column(name="profesor_curso")
@@ -27,5 +33,7 @@ public class CoursesModel {
 
     @Column(name = "maestria")
     private String courseProgram;
+
+
 
 }

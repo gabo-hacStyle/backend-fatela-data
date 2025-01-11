@@ -13,6 +13,7 @@ public class ShowGradesDTO {
     private String studentCode;
     private String courseCode;
     private Integer studentCountryId;
+    private String courseName;
     private String approved;
     private Float grade;
     private String status;

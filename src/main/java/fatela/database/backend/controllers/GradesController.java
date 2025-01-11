@@ -52,14 +52,13 @@ public class GradesController {
                 @RequestParam(required = false) Integer year,
                 @RequestParam(required = false) Integer countryId,
                 @RequestParam(required = false) String gender,
-                @RequestParam(required = false) String courseWithYear,
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "30") int size){
         //Integer yearInt = year == null ? null : Integer.parseInt(year);
 
 
         Page<ShowGradesDTO> grades = gradesService.getGradesFiltered(student, approved, course, program, year,
-        countryId, gender, courseWithYear, page, size);
+        countryId, gender, page, size);
 
 
 
@@ -88,8 +87,8 @@ public ResponseEntity<ShowInitialInfoDTO> getInfoQuantities(
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) String student,
             @RequestParam(required = false) Integer countryId,
-            @RequestParam(required = false) String gender,
-            @RequestParam(required = false) String courseCodeWithYear
+            @RequestParam(required = false) String gender
+
     ) {
     Map<String, Object> quantities = gradesService.getInfoQuantities(
             student,
@@ -98,8 +97,7 @@ public ResponseEntity<ShowInitialInfoDTO> getInfoQuantities(
             program,
             year,
             countryId,
-            gender,
-            courseCodeWithYear
+            gender
     );
 
         ShowInitialInfoDTO response = new ShowInitialInfoDTO();
