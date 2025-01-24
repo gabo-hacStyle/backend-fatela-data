@@ -27,7 +27,7 @@ public class CoursesController {
     @PreAuthorize("hasAnyRole('ROLE_COORDINATOR', 'ROLE_STAFF')")
     public ResponseEntity<Page<MenuCoursesModel>> getCoursesList(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "25") int size
+            @RequestParam(defaultValue = "50") int size
     ){
         Page<MenuCoursesModel> coursesPage = menuCoursesRepository.findAll(PageRequest.of(page, size));
         return ResponseEntity.ok(coursesPage);
@@ -41,6 +41,17 @@ public class CoursesController {
     )
     {
         List<CoursesModel> courses = courseRepository.findCoursesOptions(courseCode);
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping
+    @RequestMapping("/year/{year}")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
+    public ResponseEntity<List<MenuCoursesModel>> getCoursesByYear(
+            @PathVariable int year
+    )
+    {
+        List<MenuCoursesModel> courses = courseRepository.findCoursesByYear(year);
         return ResponseEntity.ok(courses);
     }
 }

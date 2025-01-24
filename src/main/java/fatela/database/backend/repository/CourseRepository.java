@@ -1,6 +1,7 @@
 package fatela.database.backend.repository;
 
 import fatela.database.backend.models.CoursesModel;
+import fatela.database.backend.models.MenuCoursesModel;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,6 @@ public interface CourseRepository extends CrudRepository<CoursesModel, String> {
     List<CoursesModel> findCoursesOptions(@Param("courseCode") String courseCode);
 
 
+    @Query("SELECT DISTINCT new fatela.database.backend.models.MenuCoursesModel(c.courseCode, c.courseName) FROM CoursesModel c WHERE c.year = :year")
+    List<MenuCoursesModel> findCoursesByYear(@Param("year") Integer year);
 }
