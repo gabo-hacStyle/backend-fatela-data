@@ -3,7 +3,7 @@ package fatela.database.backend.controllers;
 import fatela.database.backend.dto.CourseDTO;
 import fatela.database.backend.dto.ProgramCoursesDTO;
 import fatela.database.backend.models.CoursesModel;
-import fatela.database.backend.models.MenuCoursesModel;
+import fatela.database.backend.dto.MenuCoursesDTO;
 import fatela.database.backend.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,11 +27,11 @@ public class CoursesController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_COORDINATOR', 'ROLE_STAFF')")
-    public ResponseEntity<Page<MenuCoursesModel>> getCoursesList(
+    public ResponseEntity<Page<MenuCoursesDTO>> getCoursesList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ){
-        Page<MenuCoursesModel> coursesPage = courseRepository.findAll(PageRequest.of(page, size));
+        Page<MenuCoursesDTO> coursesPage = courseRepository.findAll(PageRequest.of(page, size));
         return ResponseEntity.ok(coursesPage);
     }
 
@@ -53,11 +53,11 @@ public class CoursesController {
             @PathVariable int year
     )
     {
-        List<MenuCoursesModel> courses = courseRepository.findCoursesByYear(year);
+        List<MenuCoursesDTO> courses = courseRepository.findCoursesByYear(year);
 
         // Agrupar cursos por maestría (programa)
-        Map<String, List<MenuCoursesModel>> groupedByProgram = courses.stream()
-                .collect(Collectors.groupingBy(MenuCoursesModel::getCourseProgram));
+        Map<String, List<MenuCoursesDTO>> groupedByProgram = courses.stream()
+                .collect(Collectors.groupingBy(MenuCoursesDTO::getCourseProgram));
 
         // Convertir a DTO
         List<ProgramCoursesDTO> result = groupedByProgram.entrySet().stream()
